@@ -1,9 +1,8 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "YourStorageAccountConnectionString",
-    "AzureWebJobsDashboard": "YourStorageAccountConnectionString",
-    "StorageConnectionString": "YourStorageAccountConnectionString",
+    "AzureWebJobsStorage": "YourStorageConnectionString",
+    "AzureWebJobsDashboard": "YourStorageConnectionString",
     "StorageContainerName": "images",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet"
   }

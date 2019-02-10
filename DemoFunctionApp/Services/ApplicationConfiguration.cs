@@ -1,12 +1,10 @@
 ﻿namespace DemoFunctionApp.Services
 {
     using System;
-    using System.IO;
-    using Microsoft.Extensions.Configuration;
 
     public class ApplicationConfiguration : IApplicationConfiguration
     {
-        public string StorageConnectionString => GetConfigurationValue("StorageConnectionString");
+        public string StorageConnectionString => GetConfigurationValue("AzureWebJobsStorage");
 
         public string StorageContainerName => GetConfigurationValue("StorageContainerName");
 
