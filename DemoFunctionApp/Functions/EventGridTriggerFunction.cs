@@ -4,6 +4,7 @@ namespace DemoFunctionApp.Functions
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
     using Microsoft.Azure.EventGrid.Models;
     using Microsoft.Azure.WebJobs;
     using Microsoft.Azure.WebJobs.Extensions.EventGrid;
@@ -33,12 +34,14 @@ namespace DemoFunctionApp.Functions
 
                 var originalFileName = eventGridEvent.Subject.Split('/').Last();
 
+                var thumbnailFileName = originalFileName.Insert(originalFileName.IndexOf('.'), "Thumbnail");
+
                 log.LogInformation($"Uploading the thumbnail...");
 
                 var thumbnailStream = thumbnailService.GenerateThumbnail(inputImageBlob);
 
                 var thumbnailUri = await fileStorageService
-                    .AddFileAsync(thumbnailStream, $"thumbnails/{originalFileName}")
+                    .AddFileAsync(thumbnailStream, $"thumbnails/{thumbnailFileName}", SetMetadata(originalFileName))
                     .ConfigureAwait(false);
 
                 log.LogInformation($"Thumbnail uploaded...");
@@ -53,6 +56,14 @@ namespace DemoFunctionApp.Functions
 
                 throw;
             }
+        }
+
+        private static IDictionary<string, string> SetMetadata(string originalFileName)
+        {
+            return new Dictionary<string, string>
+            {
+                {"OriginalFileName", originalFileName}
+            };
         }
     }
 }
