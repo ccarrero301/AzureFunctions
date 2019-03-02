@@ -4,6 +4,7 @@
     "AzureWebJobsStorage": "YourStorageConnectionString",
     "AzureWebJobsDashboard": "YourStorageConnectionString",
     "StorageContainerName": "images",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet"
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "MSDEPLOY_RENAME_LOCKED_FILES": 1
   }
 }
