@@ -5,8 +5,8 @@ namespace DemoFunctionApp
     using Microsoft.Azure.WebJobs.Hosting;
     using Microsoft.Azure.WebJobs;
     using Microsoft.Extensions.DependencyInjection;
-    using Services;
-    using Functions;
+    using Services.Contracts;
+    using Services.Implementations;
     using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
     public class Startup : IWebJobsStartup
@@ -20,7 +20,7 @@ namespace DemoFunctionApp
 
             services.AddTransient<IThumbnailService, ThumbnailService>();
 
-            services.AddTransient<IFileStorageService, AzureBlobStorageService>();
+            services.AddTransient<ICloudFileStorageService, AzureBlobStorageService>();
         }
     }
 }

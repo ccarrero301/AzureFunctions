@@ -9,7 +9,7 @@ namespace DemoFunctionApp.Functions
     using Microsoft.Azure.WebJobs;
     using Microsoft.Azure.WebJobs.Extensions.EventGrid;
     using Microsoft.Extensions.Logging;
-    using Services;
+    using Services.Contracts;
     using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
     // http://localhost:7071/runtime/webhooks/EventGrid?functionName=EventGridTriggerFunctionTest
@@ -21,7 +21,7 @@ namespace DemoFunctionApp.Functions
             [EventGridTrigger] EventGridEvent eventGridEvent,
             [Blob("{data.url}", FileAccess.Read, Connection = "AzureWebJobsStorage")] Stream inputImageBlob,
             [Inject] IThumbnailService thumbnailService,
-            [Inject] IFileStorageService fileStorageService,
+            [Inject] ICloudFileStorageService fileStorageService,
             ILogger log)
         {
             try
@@ -41,7 +41,7 @@ namespace DemoFunctionApp.Functions
                 var thumbnailStream = thumbnailService.GenerateThumbnail(inputImageBlob);
 
                 var thumbnailUri = await fileStorageService
-                    .AddFileAsync(thumbnailStream, $"thumbnails/{thumbnailFileName}", SetMetadata(originalFileName))
+                    .UploadStreamAsync(thumbnailStream, $"thumbnails/{thumbnailFileName}", SetMetadata(originalFileName))
                     .ConfigureAwait(false);
 
                 log.LogInformation($"Thumbnail uploaded...");
