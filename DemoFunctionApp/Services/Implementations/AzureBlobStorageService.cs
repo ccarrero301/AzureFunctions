@@ -30,7 +30,7 @@
             return SasUtils.GetBlobSasUri(blockBlobReference);
         }
 
-        public async Task<Stream> GetFileAsStreamAsync(string fileFullPath)
+        public async Task<Stream> DownloadFileAsStreamAsync(string fileFullPath)
         {
             var blockBlob = GetSasCloudBlockBlob(fileFullPath);
 

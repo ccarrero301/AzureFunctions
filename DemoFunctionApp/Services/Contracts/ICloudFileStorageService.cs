@@ -9,7 +9,7 @@
     {
         Task<Uri> UploadStreamAsync(Stream sourceStream, string destinationFullPath, IDictionary<string, string> metaData);
 
-        Task<Stream> GetFileAsStreamAsync(string fileFullPath);
+        Task<Stream> DownloadFileAsStreamAsync(string fileFullPath);
 
         Task<IDictionary<string, string>> GetFileMetadataAsync(string fileFullPath);
     }
