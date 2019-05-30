@@ -1,8 +1,8 @@
 {
   "IsEncrypted": false,
   "Values": {
-    "AzureWebJobsStorage": "YourStorageConnectionString",
-    "AzureWebJobsDashboard": "YourStorageConnectionString",
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
     "StorageContainerName": "images",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
     "MSDEPLOY_RENAME_LOCKED_FILES": 1
