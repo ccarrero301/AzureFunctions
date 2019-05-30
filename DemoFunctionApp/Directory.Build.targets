@@ -12,6 +12,6 @@
           SourceFiles="$(_FunctionsExtensionsDir)\extensions.json"
           DestinationFiles="$(PublishDir)bin\extensions.json"
           OverwriteReadOnlyFiles="true"
-          ContinueOnError="true"/>
+          ContinueOnError="true" />
   </Target>
 </Project>

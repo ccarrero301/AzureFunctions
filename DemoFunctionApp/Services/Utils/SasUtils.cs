@@ -1,8 +1,8 @@
-﻿namespace DemoFunctionApp.Services.Utils
-{
-    using System;
-    using Microsoft.WindowsAzure.Storage.Blob;
+﻿using System;
+using Microsoft.WindowsAzure.Storage.Blob;
 
+namespace DemoFunctionApp.Services.Utils
+{
     public static class SasUtils
     {
         public static Uri GetBlobSasUri(CloudBlob blockBlob)

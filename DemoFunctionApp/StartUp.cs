@@ -1,18 +1,21 @@
-﻿[assembly: Microsoft.Azure.WebJobs.Hosting.WebJobsStartup(typeof(DemoFunctionApp.Startup))]
+﻿using DemoFunctionApp;
+using DemoFunctionApp.Services.Contracts;
+using DemoFunctionApp.Services.Implementations;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
+
+[assembly: WebJobsStartup(typeof(Startup))]
 
 namespace DemoFunctionApp
 {
-    using Microsoft.Azure.WebJobs.Hosting;
-    using Microsoft.Azure.WebJobs;
-    using Microsoft.Extensions.DependencyInjection;
-    using Services.Contracts;
-    using Services.Implementations;
-    using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
-
     public class Startup : IWebJobsStartup
     {
-        public void Configure(IWebJobsBuilder builder) =>
+        public void Configure(IWebJobsBuilder builder)
+        {
             builder.AddDependencyInjection(ConfigureServices);
+        }
 
         private void ConfigureServices(IServiceCollection services)
         {

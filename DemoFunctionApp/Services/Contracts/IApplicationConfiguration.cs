@@ -3,7 +3,7 @@
     public interface IApplicationConfiguration
     {
         string StorageConnectionString { get; }
-        
+
         string StorageContainerName { get; }
     }
 }

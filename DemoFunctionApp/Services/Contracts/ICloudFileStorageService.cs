@@ -1,10 +1,10 @@
-﻿namespace DemoFunctionApp.Services.Contracts
-{
-    using System;
-    using System.IO;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
+namespace DemoFunctionApp.Services.Contracts
+{
     public interface ICloudFileStorageService
     {
         Task<Uri> UploadStreamAsync(Stream sourceStream, string destinationFullPath, IDictionary<string, string> metaData);

@@ -1,15 +1,15 @@
-﻿namespace DemoFunctionApp.Services.Implementations
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Threading.Tasks;
-    using Microsoft.WindowsAzure.Storage;
-    using Microsoft.WindowsAzure.Storage.Blob;
-    using Microsoft.WindowsAzure.Storage.DataMovement;
-    using Contracts;
-    using Utils;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using DemoFunctionApp.Services.Contracts;
+using DemoFunctionApp.Services.Utils;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.DataMovement;
 
+namespace DemoFunctionApp.Services.Implementations
+{
     public class AzureBlobStorageService : ICloudFileStorageService
     {
         private readonly string _connectionString;
@@ -83,7 +83,7 @@
 
             var context = new SingleTransferContext
             {
-                SetAttributesCallbackAsync = async (destination) =>
+                SetAttributesCallbackAsync = async destination =>
                 {
                     var destinationBlob = destination as CloudBlockBlob;
 

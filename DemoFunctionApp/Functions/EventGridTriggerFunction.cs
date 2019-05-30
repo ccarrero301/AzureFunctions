@@ -1,17 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using DemoFunctionApp.Services.Contracts;
+using Microsoft.Azure.EventGrid.Models;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.EventGrid;
+using Microsoft.Extensions.Logging;
+using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
+
 namespace DemoFunctionApp.Functions
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
-    using Microsoft.Azure.EventGrid.Models;
-    using Microsoft.Azure.WebJobs;
-    using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-    using Microsoft.Extensions.Logging;
-    using Services.Contracts;
-    using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
-
     // http://localhost:7071/runtime/webhooks/EventGrid?functionName=EventGridTriggerFunctionTest
     // https://docs.microsoft.com/en-us/azure/azure-functions/functions-debug-event-grid-trigger-local
     public static class EventGridTriggerFunction
@@ -36,7 +36,7 @@ namespace DemoFunctionApp.Functions
 
                 var thumbnailFileName = originalFileName.Insert(originalFileName.IndexOf('.'), "Thumbnail");
 
-                log.LogInformation($"Uploading the thumbnail...");
+                log.LogInformation("Uploading the thumbnail...");
 
                 var thumbnailStream = thumbnailService.GenerateThumbnail(inputImageBlob);
 
@@ -44,7 +44,7 @@ namespace DemoFunctionApp.Functions
                     .UploadStreamAsync(thumbnailStream, $"thumbnails/{thumbnailFileName}", SetMetadata(originalFileName))
                     .ConfigureAwait(false);
 
-                log.LogInformation($"Thumbnail uploaded...");
+                log.LogInformation("Thumbnail uploaded...");
 
                 log.LogInformation($"Thumbnail Uri:\n {thumbnailUri}");
             }
