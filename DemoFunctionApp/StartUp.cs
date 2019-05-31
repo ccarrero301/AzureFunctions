@@ -12,10 +12,7 @@ namespace DemoFunctionApp
 {
     public class Startup : IWebJobsStartup
     {
-        public void Configure(IWebJobsBuilder builder)
-        {
-            builder.AddDependencyInjection(ConfigureServices);
-        }
+        public void Configure(IWebJobsBuilder builder) => builder.AddDependencyInjection(ConfigureServices);
 
         private void ConfigureServices(IServiceCollection services)
         {

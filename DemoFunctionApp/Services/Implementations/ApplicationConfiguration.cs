@@ -9,9 +9,6 @@ namespace DemoFunctionApp.Services.Implementations
 
         public string StorageContainerName => GetConfigurationValue("StorageContainerName");
 
-        private static string GetConfigurationValue(string value)
-        {
-            return Environment.GetEnvironmentVariable(value);
-        }
+        private static string GetConfigurationValue(string value) => Environment.GetEnvironmentVariable(value);
     }
 }

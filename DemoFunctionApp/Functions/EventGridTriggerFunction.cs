@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -41,7 +42,7 @@ namespace DemoFunctionApp.Functions
                 var thumbnailStream = thumbnailService.GenerateThumbnail(inputImageBlob);
 
                 var thumbnailUri = await fileStorageService
-                    .UploadStreamAsync(thumbnailStream, $"thumbnails/{thumbnailFileName}", SetMetadata(originalFileName))
+                    .UploadStreamAsync(thumbnailStream, $"thumbnails/{thumbnailFileName}", SetMetadata(eventGridEvent))
                     .ConfigureAwait(false);
 
                 log.LogInformation("Thumbnail uploaded...");
@@ -58,12 +59,13 @@ namespace DemoFunctionApp.Functions
             }
         }
 
-        private static IDictionary<string, string> SetMetadata(string originalFileName)
-        {
-            return new Dictionary<string, string>
+        private static IDictionary<string, string> SetMetadata(EventGridEvent eventGridEvent) =>
+            new Dictionary<string, string>
             {
-                {"OriginalFileName", originalFileName}
+                {"OriginalFileName", eventGridEvent.Subject.Split('/').Last()},
+                {"Subject", eventGridEvent.Subject},
+                {"Topic", eventGridEvent.Topic},
+                {"EventTime", eventGridEvent.EventTime.ToString(CultureInfo.InvariantCulture)}
             };
-        }
     }
 }
