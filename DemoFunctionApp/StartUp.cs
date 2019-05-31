@@ -1,4 +1,6 @@
-﻿using DemoFunctionApp;
+﻿using CloudStorage.Contracts;
+using CloudStorage.Implementations.Azure;
+using DemoFunctionApp;
 using DemoFunctionApp.Services.Contracts;
 using DemoFunctionApp.Services.Implementations;
 using Microsoft.Azure.WebJobs;
@@ -16,11 +18,12 @@ namespace DemoFunctionApp
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IApplicationConfiguration, ApplicationConfiguration>();
+            var applicationConfiguration = new ApplicationConfiguration();
 
             services.AddTransient<IThumbnailService, ThumbnailService>();
 
-            services.AddTransient<ICloudFileStorageService, AzureBlobStorageService>();
+            services.AddTransient<ICloudFileStorage, BlockBlobStorage>(provider =>
+                new BlockBlobStorage(applicationConfiguration.StorageConnectionString, applicationConfiguration.StorageContainerName));
         }
     }
 }

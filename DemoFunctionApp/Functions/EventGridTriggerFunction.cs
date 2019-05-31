@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CloudStorage.Contracts;
 using DemoFunctionApp.Services.Contracts;
 using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.WebJobs;
@@ -22,7 +23,7 @@ namespace DemoFunctionApp.Functions
             [EventGridTrigger] EventGridEvent eventGridEvent,
             [Blob("{data.url}", FileAccess.Read, Connection = "AzureWebJobsStorage")] Stream inputImageBlob,
             [Inject] IThumbnailService thumbnailService,
-            [Inject] ICloudFileStorageService fileStorageService,
+            [Inject] ICloudFileStorage fileStorageService,
             ILogger log)
         {
             try
