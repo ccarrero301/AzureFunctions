@@ -3,26 +3,22 @@ using CloudStorage.Implementations.Azure;
 using DemoFunctionApp;
 using DemoFunctionApp.Services.Contracts;
 using DemoFunctionApp.Services.Implementations;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Hosting;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
-[assembly: WebJobsStartup(typeof(Startup))]
+[assembly: FunctionsStartup(typeof(Startup))]
 
 namespace DemoFunctionApp
 {
-    public class Startup : IWebJobsStartup
-    {
-        public void Configure(IWebJobsBuilder builder) => builder.AddDependencyInjection(ConfigureServices);
-
-        private void ConfigureServices(IServiceCollection services)
+    public class Startup : FunctionsStartup
+    { 
+        public override void Configure(IFunctionsHostBuilder builder)
         {
             var applicationConfiguration = new ApplicationConfiguration();
 
-            services.AddTransient<IThumbnailService, ThumbnailService>();
+            builder.Services.AddScoped<IThumbnailService, ThumbnailService>();
 
-            services.AddTransient<ICloudFileStorage, BlockBlobStorage>(provider =>
+            builder.Services.AddScoped<ICloudFileStorage, BlockBlobStorage>(provider =>
                 new BlockBlobStorage(applicationConfiguration.StorageConnectionString, applicationConfiguration.StorageContainerName));
         }
     }

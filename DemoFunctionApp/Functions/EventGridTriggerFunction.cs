@@ -10,20 +10,26 @@ using Microsoft.Azure.EventGrid.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.EventGrid;
 using Microsoft.Extensions.Logging;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace DemoFunctionApp.Functions
 {
     // http://localhost:7071/runtime/webhooks/EventGrid?functionName=EventGridTriggerFunctionTest
     // https://docs.microsoft.com/en-us/azure/azure-functions/functions-debug-event-grid-trigger-local
-    public static class EventGridTriggerFunction
+    public class EventGridTriggerFunction
     {
+        private readonly IThumbnailService _thumbnailService;
+        private readonly ICloudFileStorage _fileStorageService;
+
+        public EventGridTriggerFunction(IThumbnailService thumbnailService, ICloudFileStorage fileStorageService)
+        {
+            _thumbnailService = thumbnailService;
+            _fileStorageService = fileStorageService;
+        }
+
         [FunctionName("ThumbnailsFunction")]
-        public static async Task ThumbnailsFunctionAsync(
+        public async Task ThumbnailsFunctionAsync(
             [EventGridTrigger] EventGridEvent eventGridEvent,
             [Blob("{data.url}", FileAccess.Read, Connection = "AzureWebJobsStorage")] Stream inputImageBlob,
-            [Inject] IThumbnailService thumbnailService,
-            [Inject] ICloudFileStorage fileStorageService,
             ILogger log)
         {
             try
@@ -40,9 +46,9 @@ namespace DemoFunctionApp.Functions
 
                 log.LogInformation("Uploading the thumbnail...");
 
-                var thumbnailStream = thumbnailService.GenerateThumbnail(inputImageBlob);
+                var thumbnailStream = _thumbnailService.GenerateThumbnail(inputImageBlob);
 
-                var thumbnailUri = await fileStorageService
+                var thumbnailUri = await _fileStorageService
                     .UploadStreamAsync(thumbnailStream, $"thumbnails/{thumbnailFileName}", SetMetadata(eventGridEvent))
                     .ConfigureAwait(false);
 
@@ -60,7 +66,7 @@ namespace DemoFunctionApp.Functions
             }
         }
 
-        private static IDictionary<string, string> SetMetadata(EventGridEvent eventGridEvent) =>
+        private IDictionary<string, string> SetMetadata(EventGridEvent eventGridEvent) =>
             new Dictionary<string, string>
             {
                 {"OriginalFileName", eventGridEvent.Subject.Split('/').Last()},
